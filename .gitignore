@@ -1,0 +1,5 @@
+*.exe
+*/*/output/*.csv
+datafusion-sql-processor
+*/output*/*.csv
+Cargo.lock

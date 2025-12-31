@@ -1,0 +1,8 @@
+[package]
+name = "datafusion-sql-processor"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+datafusion = "51.0.0"
+tokio = { version = "1", features = ["full"] }

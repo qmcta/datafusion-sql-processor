@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  rust_dev:
+    container_name: rustdev
+    hostname: rustdev
+    image: rustdev:latest
+    build:
+      context: .
+    volumes:
+      - /work:/work
+    working_dir: /work
+    network_mode: "host"
+    tty: true
