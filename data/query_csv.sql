@@ -4,7 +4,7 @@ CREATE EXTERNAL TABLE csv_table (
     "住所" VARCHAR
 )
 STORED AS CSV
-LOCATION 'data/input.csv'
+LOCATION 'data/*.csv'
 OPTIONS (format.has_header true);
 
 -- 全データを抽出

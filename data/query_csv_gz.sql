@@ -4,7 +4,7 @@ CREATE EXTERNAL TABLE csv_gz_table (
     "住所" VARCHAR
 )
 STORED AS CSV
-LOCATION 'data/input.csv.gz'
+LOCATION 'data/*.csv.gz'
 OPTIONS (
     format.has_header true,
     format.compression gzip

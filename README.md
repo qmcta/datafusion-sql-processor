@@ -33,14 +33,23 @@ docker exec -it rustdev bash
 # プロジェクトディレクトリに移動
 cd /work/dev/project/csv-gz2csv/datafusion-sql-processor
 
-# 実行例
-cargo run -- data/query.sql
-cargo run -- data/query_csv.sql
-cargo run -- data/query_csv_gz.sql
+# 基本的な実行（デフォルトで CSV 出力、SQLと同じ階層の output/ フォルダに保存）
+cargo run -- data/query.sql 
 
-# 出力先ディレクトリのベースを指定する場合 (例: output_test/output/ に出力)
-cargo run -- data/query.sql output_test
+# 出力ディレクトリを指定する場合
+cargo run -- data/query.sql --output-dir ./my_output 
+
+# 出力フォーマットを指定する場合 (csv, parquet, jsonl)
+cargo run -- data/query.sql --format jsonl
 ```
+
+コマンドライン引数詳細
+
+- `sql_file_path`: 実行するSQLファイルのパス（必須）。
+
+- `-f, --format`: 出力形式 (`csv`, `parquet`, `jsonl`)。デフォルトは `csv`。
+
+- `-o, --output-dir`: 出力先ディレクトリ。未指定の場合はSQLファイルと同じ階層の `output` フォルダが自動作成されます。
 
 ### 3. Linux バイナリのビルドと出力
 
@@ -70,29 +79,42 @@ cp /home/debian/target/x86_64-pc-windows-gnu/release/datafusion-sql-processor.ex
 
 ### 5. 一括処理 (Batch Processing)
 
-ディレクトリ内の複数の JSONL ファイルを一括で CSV に変換するためのスクリプトを用意しています。これらのスクリプトは、ベースとなる SQL ファイルの `LOCATION` を動的に書き換えて実行します。
+ディレクトリ内の複数の `.jsonl` ファイルを同じ SQL テンプレートで一括処理するために、ヘルパースクリプトが用意されています 。これらのスクリプトは、入力ファイル名に基づいて一時的な SQL ファイルを生成し、個別の出力ファイルを生成します。
 
-### Linux / macOS (Bash)
+スクリプトの引数
+
+1. `input_dir`: `.jsonl` ファイルが格納されているディレクトリ。
+
+2. `base_sql_file`: 実行する SQL ファイル（内部に `LOCATION '...'` 句を含む必要があります）。
+
+3. `format`: 出力形式 (`csv`, `parquet`, `jsonl`)。デフォルトは `jsonl`。
+
+Linux / macOS (Bash)
 
 ```bash
 chmod +x process_jsonl.sh
-./process_jsonl.sh <jsonlのあるディレクトリ> <ベースSQLファイル>
+./process_jsonl.sh <input_dir> <base_sql_file> <format>
 
-# 例: data フォルダ内の全 jsonl を data/query.sql をベースに処理
-./process_jsonl.sh data data/query.sql
+# 例: data フォルダ内の全 jsonl を parquet 形式で一括処理
+./process_jsonl.sh data data/query.sql parquet
 ```
 
-### Windows (Batch)
+Windows (Batch)
 
 ```powershell
-# PowerShell の場合は .\ を付けて実行してください
-.\process_jsonl.bat <jsonlのあるディレクトリ> <ベースSQLファイル>
+process_jsonl.bat <input_dir> <base_sql_file> <format>
 
-# 例:
-.\process_jsonl.bat data data\query.sql
+# 例: data フォルダ内の全 jsonl を jsonl 形式で一括処理
+process_jsonl.bat data data\query.sql jsonl
 ```
 
-変換された CSV は `output_csv/<ファイル名>/` ディレクトリ内に出力されます。
+スクリプトの動作詳細
+
+- **出力先**: フォーマットに応じて `output_csv/`, `output_parquet/`, `output_jsonl/` ディレクトリが自動作成されます。
+
+- **ファイル名**: 入力ファイル名（拡張子除く）がそのまま出力ファイル名として引き継がれます。
+
+- **SQLの自動書き換え**: スクリプトは実行時、SQL ファイル内の `LOCATION '.*'` 部分を現在の入力ファイルのパスに自動的に置換します。
 
 ## トラブルシューティング
 
