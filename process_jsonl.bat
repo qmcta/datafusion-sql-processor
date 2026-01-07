@@ -24,7 +24,7 @@ for %%F in (%INPUT_DIR%\*.jsonl) do (
     set "TEMP_SQL=!basename!.sql"
     
     :: PowerShellを使用してSQL内のLOCATIONを置換
-    powershell -Command "$utf8 = New-Object System.Text.UTF8Encoding($false); $c = (Get-Content -LiteralPath '%BASE_SQL%') -replace 'LOCATION ''.*''', 'LOCATION ''!jsonl_file:\=/!'''; [System.IO.File]::WriteAllLines('!TEMP_SQL!', $c, $utf8)"
+    powershell -Command "$utf8 = New-Object System.Text.UTF8Encoding($false); $c = (Get-Content -Encoding UTF8 -LiteralPath '%BASE_SQL%') -replace 'LOCATION ''.*''', 'LOCATION ''!jsonl_file:\=/!'''; [System.IO.File]::WriteAllLines('!TEMP_SQL!', $c, $utf8)"
 
     :: プロセッサの実行 (-f でフォーマットを指定)
     datafusion-sql-processor.exe !TEMP_SQL! -f %FORMAT% -o %OUTPUT_ROOT%
