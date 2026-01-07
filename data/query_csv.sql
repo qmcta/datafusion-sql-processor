@@ -8,4 +8,4 @@ LOCATION 'data/*.csv'
 OPTIONS (format.has_header true);
 
 -- 全データを抽出
-SELECT * FROM csv_table;
+SELECT * FROM csv_table where "所有者コード"='07685';

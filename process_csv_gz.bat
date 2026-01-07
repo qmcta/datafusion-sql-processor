@@ -12,6 +12,13 @@ if "%INPUT_DIR%"=="" goto usage
 if "%BASE_SQL%"=="" goto usage
 if "%FORMAT%"=="" SET FORMAT=csv
 
+findstr /i "gzip" "%BASE_SQL%" >nul
+if %errorlevel% neq 0 (
+    echo WARNING: The SQL file '%BASE_SQL%' does not appear to set 'format.compression gzip'.
+    echo          Processing .csv.gz files without this option will likely fail.
+    echo          Please ensure your SQL file contains: OPTIONS (format.compression gzip^)
+)
+
 SET OUTPUT_ROOT=output_%FORMAT%
 if not exist %OUTPUT_ROOT% mkdir %OUTPUT_ROOT%
 

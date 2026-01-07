@@ -12,6 +12,15 @@ if [ -z "$INPUT_DIR" ] || [ -z "$BASE_SQL" ]; then
     exit 1
 fi
 
+
+# Check if SQL file contains 'gzip' option checks (case-insensitive)
+if ! grep -qi "gzip" "$BASE_SQL"; then
+    echo "WARNING: The SQL file '$BASE_SQL' does not appear to set 'format.compression gzip'."
+    echo "         Processing .csv.gz files without this option will likely fail."
+    echo "         Please ensure your SQL file contains: OPTIONS (format.compression gzip)"
+    # countinuing anyway...
+fi
+
 # 出力ディレクトリの作成
 OUTPUT_ROOT="output_$FORMAT"
 mkdir -p "$OUTPUT_ROOT"

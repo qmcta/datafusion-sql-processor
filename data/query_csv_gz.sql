@@ -11,5 +11,5 @@ OPTIONS (
 );
 
 -- 30歳以上のデータを抽出
-SELECT * FROM csv_gz_table WHERE 所有者コード='06520';
+SELECT * FROM csv_gz_table WHERE "所有者コード"='06520';
 
