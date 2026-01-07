@@ -28,7 +28,7 @@ for csv_file in "$INPUT_DIR"/*.csv; do
     echo "Processing $csv_file ..."
 
     # 一時SQLファイルの作成
-    TEMP_SQL="temp_${basename}.sql"
+    TEMP_SQL="${basename}.sql"
     
     # sedを使用してLOCATION句を入力ファイルパスに置換
     sed "s|LOCATION '.*'|LOCATION '$csv_file'|g" "$BASE_SQL" > "$TEMP_SQL"

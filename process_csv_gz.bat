@@ -18,10 +18,11 @@ if not exist %OUTPUT_ROOT% mkdir %OUTPUT_ROOT%
 for %%F in (%INPUT_DIR%\*.csv.gz) do (
     set "csv_file=%%F"
     set "filename=%%~nxF"
-    set "basename=%%~nF"
+    set "stem=%%~nF"
+    for %%A in ("!stem!") do set "basename=%%~nA"
     echo Processing !csv_file! ...
 
-    set "TEMP_SQL=temp_!basename!.sql"
+    set "TEMP_SQL=!basename!.sql"
     
     :: PowerShellを使用してSQL内のLOCATIONを置換
     powershell -Command "$utf8 = New-Object System.Text.UTF8Encoding($false); $c = (Get-Content -LiteralPath '%BASE_SQL%') -replace 'LOCATION ''.*''', 'LOCATION ''!csv_file:\=/!'''; [System.IO.File]::WriteAllLines('!TEMP_SQL!', $c, $utf8)"

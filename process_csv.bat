@@ -21,7 +21,7 @@ for %%F in (%INPUT_DIR%\*.csv) do (
     set "basename=%%~nF"
     echo Processing !csv_file! ...
 
-    set "TEMP_SQL=temp_!basename!.sql"
+    set "TEMP_SQL=!basename!.sql"
     
     :: PowerShellを使用してSQL内のLOCATIONを置換
     powershell -Command "$utf8 = New-Object System.Text.UTF8Encoding($false); $c = (Get-Content -LiteralPath '%BASE_SQL%') -replace 'LOCATION ''.*''', 'LOCATION ''!csv_file:\=/!'''; [System.IO.File]::WriteAllLines('!TEMP_SQL!', $c, $utf8)"

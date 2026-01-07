@@ -28,7 +28,7 @@ for jsonl_file in "$INPUT_DIR"/*.jsonl; do
     echo "Processing $jsonl_file ..."
 
     # 一時SQLファイルの作成
-    TEMP_SQL="temp_${basename}.sql"
+    TEMP_SQL="${basename}.sql"
     
     # sedを使用してLOCATION句を入力ファイルパスに置換
     sed "s|LOCATION '.*'|LOCATION '$jsonl_file'|g" "$BASE_SQL" > "$TEMP_SQL"
