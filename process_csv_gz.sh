@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Usage: ./process_csv.sh <input_dir> <base_sql_file> <format>
-# Example: ./process_csv.sh data data/query.sql csv
+# Usage: ./process_csv_gz.sh <input_dir> <base_sql_file> <format>
+# Example: ./process_csv_gz.sh data data/query.sql csv
 
 INPUT_DIR=$1
 BASE_SQL=$2

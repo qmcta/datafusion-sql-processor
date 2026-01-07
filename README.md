@@ -31,7 +31,7 @@ docker compose up -d --build
 docker exec -it rustdev bash
 
 # プロジェクトディレクトリに移動
-cd /work/dev/project/csv-gz2csv/datafusion-sql-processor
+cd /work/dev/project/datafusion-sql-processor
 
 # 基本的な実行（デフォルトで CSV 出力、SQLと同じ階層の output/ フォルダに保存）
 cargo run -- data/query.sql 
@@ -115,6 +115,46 @@ process_jsonl.bat data data\query.sql jsonl
 - **ファイル名**: 入力ファイル名（拡張子除く）がそのまま出力ファイル名として引き継がれます。
 
 - **SQLの自動書き換え**: スクリプトは実行時、SQL ファイル内の `LOCATION '.*'` 部分を現在の入力ファイルのパスに自動的に置換します。
+
+### 6. CSV / CSV.GZ の一括処理
+
+JSONL と同様に、CSV および GZIP 圧縮された CSV (`.csv.gz`) を一括処理するスクリプトも用意されています。
+
+**CSV ファイル (`.csv`) の処理:**
+
+Linux / macOS (Bash):
+
+```bash
+./process_csv.sh <input_dir> <base_sql_file> <format>
+# 例: data フォルダ内の全 csv を利用
+./process_csv.sh data data/query_csv.sql csv
+```
+
+Windows (Batch):
+
+```powershell
+process_csv.bat <input_dir> <base_sql_file> <format>
+# 例::
+process_csv.bat data data\query_csv.sql csv
+```
+
+**CSV.GZ ファイル (`.csv.gz`) の処理:**
+
+Linux / macOS (Bash):
+
+```bash
+./process_csv_gz.sh <input_dir> <base_sql_file> <format>
+# 例: data フォルダ内の全 csv.gz を利用
+./process_csv_gz.sh data data/query_csv_gz.sql csv
+```
+
+Windows (Batch):
+
+```powershell
+process_csv_gz.bat <input_dir> <base_sql_file> <format>
+# 例::
+process_csv_gz.bat data data\query_csv_gz.sql csv
+```
 
 ## トラブルシューティング
 

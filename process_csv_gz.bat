@@ -1,8 +1,8 @@
 @echo off
 SETLOCAL EnableDelayedExpansion
 
-:: Usage: process_csv.bat <input_dir> <base_sql_file> <format>
-:: Example: process_csv.bat data data\query.sql csv
+:: Usage: process_csv_gz.bat <input_dir> <base_sql_file> <format>
+:: Example: process_csv_gz.bat data data\query.sql csv
 
 SET INPUT_DIR=%1
 SET BASE_SQL=%2
