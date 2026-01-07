@@ -23,13 +23,13 @@ for %%F in (%INPUT_DIR%\*.csv) do (
 
     set "TEMP_SQL=!basename!.sql"
     
-    :: PowerShellを使用してSQL内のLOCATIONを置換
+    :: PowerShell: Replace LOCATION logic and write to temp SQL
     powershell -Command "$utf8 = New-Object System.Text.UTF8Encoding($false); $c = (Get-Content -Encoding UTF8 -LiteralPath '%BASE_SQL%') -replace 'LOCATION ''.*''', 'LOCATION ''!csv_file:\=/!'''; [System.IO.File]::WriteAllLines('!TEMP_SQL!', $c, $utf8)"
 
-    :: プロセッサの実行 (-f でフォーマットを指定)
+    :: Execute Processor (-f specifies format)
     datafusion-sql-processor.exe !TEMP_SQL! -f %FORMAT% -o %OUTPUT_ROOT%
 
-    :: 一時ファイルの削除
+    :: Remove temp SQL
     del !TEMP_SQL!
 )
 
