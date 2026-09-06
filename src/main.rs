@@ -146,3 +146,40 @@ async fn main() -> Result<()> {
 
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_args_parsing_default() {
+        let args = Args::try_parse_from(["app", "data/query.sql"]).expect("Failed to parse args");
+        assert_eq!(args.sql_file_path, "data/query.sql");
+        assert_eq!(args.format, OutputFormat::Csv);
+        assert!(args.output_dir.is_none());
+    }
+
+    #[test]
+    fn test_args_parsing_custom_format_and_dir() {
+        let args = Args::try_parse_from([
+            "app",
+            "data/query.sql",
+            "--format",
+            "parquet",
+            "--output-dir",
+            "custom_output",
+        ])
+        .expect("Failed to parse custom args");
+        assert_eq!(args.sql_file_path, "data/query.sql");
+        assert_eq!(args.format, OutputFormat::Parquet);
+        assert_eq!(args.output_dir, Some(PathBuf::from("custom_output")));
+    }
+
+    #[test]
+    fn test_args_parsing_jsonl_format() {
+        let args = Args::try_parse_from(["app", "data/query.sql", "-f", "jsonl"])
+            .expect("Failed to parse jsonl arg");
+        assert_eq!(args.sql_file_path, "data/query.sql");
+        assert_eq!(args.format, OutputFormat::Jsonl);
+    }
+}
